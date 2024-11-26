@@ -11,11 +11,6 @@ Error Handlers:
     404 - Returns a JSON response with an error message for Not Found.
     500 - Returns a JSON response with an error message for Internal Server Error.
 
-Functions:
-    home() - Returns a welcome message and API documentation status.
-    not_found(error) - Handles 404 Not Found errors.
-    internal_error(error) - Handles 500 Internal Server Error.
-
 Initialization:
     init_db() - Initializes the database.
     app.run() - Runs the Flask application on host '0.0.0.0' and port 80.
