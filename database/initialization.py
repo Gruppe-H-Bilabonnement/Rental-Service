@@ -81,9 +81,16 @@ def _check_data_exists():
 
 # Load rental data from CSV into the database
 def _load_rental_data():
+    # Define the CSV path
+    csv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "../data-files/bilabonnement.csv")
+    
     try:
+        # Check if the file exists first
+        if not os.path.exists(csv_path):
+            print(f'Error: CSV file not found at {csv_path}')
+            return
+
         # Read the CSV file
-        csv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data/rental_data.csv")
         data = pd.read_csv(csv_path)
 
         # Prepare data for insertion with a list of tuples
@@ -118,8 +125,6 @@ def _load_rental_data():
 
         connection.commit()
 
-    except FileNotFoundError:
-        print(f"Error: CSV file not found at {csv_path}")
     except sqlite3.Error as e:
         print(f"Error loading data: {e}")
     finally:

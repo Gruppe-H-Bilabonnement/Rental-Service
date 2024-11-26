@@ -15,6 +15,7 @@ Initialization:
     init_db() - Initializes the database.
     app.run() - Runs the Flask application on host '0.0.0.0' and port 80.
 """
+
 from flask import Flask, jsonify
 from database.initialization import init_db
 from api.rental_routes import rental_routes

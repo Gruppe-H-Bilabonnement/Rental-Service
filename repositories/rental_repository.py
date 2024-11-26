@@ -77,27 +77,37 @@ def db_update_rental_contract(rental_id, data):
         connection = create_connection()
         cursor = connection.cursor()
 
-        query = """
-            UPDATE rental_contracts
-            SET start_date = ?, end_date = ?, start_km = ?, contracted_km = ?, monthly_price = ?, car_id = ?, customer_id = ?, updated_at = datetime('now')
-            WHERE id = ?
-        """
-        cursor.execute(query, (
-            data['start_date'],
-            data['end_date'],
-            data['start_km'],
-            data['contracted_km'],
-            data['monthly_price'],
-            data['car_id'],
-            data['customer_id'],
-            rental_id
-        ))
+        # Get information about all columns in the rental_contracts table
+        cursor.execute("PRAGMA table_info(rental_contracts)")
 
-        connection.commit()
-        return cursor.rowcount > 0 # Return True if rows were updated
+        # Fetch all column information
+        all_columns = cursor.fetchall()
+
+        # Extract column names from the column information
+        columns = [column['name'] for column in all_columns if column['name'] not in ['id']]
+
+        # Dynamically build the update query based on provided fields
+        update_fields = []
+        params = []
+        for key in columns:
+            if key in data:
+                update_fields.append(f"{key} = ?")
+                params.append(data[key])
+        
+        # Execute update if fields are provided
+        if update_fields:
+            query = f"UPDATE rental_contracts SET {', '.join(update_fields)} WHERE id = ?"
+            params.append(rental_id)
+
+            cursor.execute(query, params)
+            connection.commit()
+            return cursor.rowcount > 0  # Return True if rows were updated
+
+        return False  # No valid fields to update
 
     except sqlite3.Error as e:
         print(f"Database error: {e}")
+        return False
     finally:
         connection.close()
 

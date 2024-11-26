@@ -1,6 +1,7 @@
 """
 Creates/connect a connection object to the SQLite database with row factory enabled.
 """
+
 import sqlite3
 
 def create_connection():

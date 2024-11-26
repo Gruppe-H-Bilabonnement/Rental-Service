@@ -43,8 +43,7 @@ def create_rental_contract():
         return jsonify({"error": "Missing required fields"}), 400
 
     try:
-        rental_id = db_create_rental_contract(data)
-        return jsonify({"message": "Rental contract created", "rental_id": rental_id}), 201
+        return jsonify({"message": "Rental contract created"}), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -67,14 +66,19 @@ def get_rental_contract(rental_id):
         return jsonify({"error": str(e)}), 500
 
 # Update a rental contract
-@rental_routes.route('/<int:rental_id>', methods=['PUT'])
+@rental_routes.route('/<int:rental_id>', methods=['PATCH'])
 def update_rental_contract(rental_id):
     data = request.json
+    
+    # Validate that some data is actually provided
+    if not data:
+        return jsonify({"error": "No update data provided"}), 400
+
     try:
-        updated_rows = db_update_rental_contract(rental_id, data)
-        if updated_rows == 0:
+        updated = db_update_rental_contract(rental_id, data)
+        if not updated:
             return jsonify({"error": "Rental contract not found"}), 404
-        return jsonify({"message": "Rental contract updated"}), 200
+        return jsonify({"message": "Rental contract partially updated"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
