@@ -1,3 +1,19 @@
+"""
+This module initializes the rental service database by creating necessary tables and loading initial data from a CSV file.
+
+Functions:
+    init_db(): Initializes the database by creating tables and loading data if not already present.
+    _create_table(): Creates the rental_contracts table and associated indexes if they do not exist.
+    _check_data_exists(): Checks if rental data already exists in the rental_contracts table.
+    _load_rental_data(): Loads rental data from a CSV file into the rental_contracts table.
+
+Dependencies:
+    - os: For file path operations.
+    - sqlite3: For SQLite database operations.
+    - pandas: For reading and processing CSV files.
+    - create_connection: Custom function from database.connection module to establish a database connection.
+"""
+
 import os
 import sqlite3
 import pandas as pd
@@ -95,7 +111,7 @@ def _load_rental_data():
 
         # Insert the data into the rental_contracts table with executemany for efficiency
         cursor.executemany("""
-            INSERT INTO rental_agreements (
+            INSERT INTO rental_contracts (
                 start_date, end_date, start_km, contracted_km, monthly_price, car_id, customer_id
             ) VALUES (?, ?, ?, ?, ?, ?, ?)
         """, rental_data)

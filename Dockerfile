@@ -14,6 +14,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the current directory contents into the container
 COPY . .
 
-# Make port 80 available to the world outside this container with gunicon
-# Gunicorn is a Python WSGI HTTP Server for UNIX.
+# Expose port 80
+EXPOSE  80
+
+# Run app.py when the container launches with gunicorn (HTTP server)
 CMD ["gunicorn", "--bind", "0.0.0.0:80", "app:app"]
