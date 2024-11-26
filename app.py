@@ -16,21 +16,69 @@ Initialization:
     app.run() - Runs the Flask application on host '0.0.0.0' and port 80.
 """
 
-from flask import Flask, jsonify
+import os
+from flask import Flask, jsonify, request
+from flask_jwt_extended import JWTManager
+from dotenv import load_dotenv
+from flasgger import swag_from
 from database.initialization import init_db
 from api.rental_routes import rental_routes
+from swagger.config import init_swagger
+
+# Load environment variables
+load_dotenv()
 
 app = Flask(__name__)
+
+# App Configuration
+app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
+jwt = JWTManager(app)
+port = int(os.getenv('PORT', 80))
+
+# Swagger Documentation
+swagger = init_swagger(app)
 
 # Register rental routes
 app.register_blueprint(rental_routes, url_prefix='/api/v1/rentals')
 
-# home route with api documentation
+# Home route with API documentation
 @app.route('/api/v1/')
+@swag_from('swagger/docs/home.yml')
 def home():
     return jsonify({
         "message": "Welcome to RentalService API",
-        "documentation": "in progress.."
+        "endpoints": [
+            {
+                "method": "GET",
+                "endpoint": "/api/v1/",
+                "description": "Provides an overview of the API and its endpoints"
+            },
+            {
+                "method": "POST",
+                "endpoint": "/api/v1/rentals",
+                "description": "Create a new rental contract"
+            },
+            {
+                "method": "GET",
+                "endpoint": "/api/v1/rentals/all",
+                "description": "Retrieve all rental contracts"
+            },
+            {
+                "method": "GET",
+                "endpoint": "/api/v1/rentals/<int:rental_id>",
+                "description": "Retrieve a rental contract by its ID"
+            },
+            {
+                "method": "PATCH",
+                "endpoint": "/api/v1/rentals/<int:rental_id>",
+                "description": "Update an existing rental contract by its ID"
+            },
+            {
+                "method": "DELETE",
+                "endpoint": "/api/v1/rentals/<int:rental_id>",
+                "description": "Delete a rental contract by its ID"
+            }
+        ]
     })
 
 # Error handler for 404 Not Found
@@ -46,4 +94,5 @@ def internal_error(error):
 # Initialize database and run the app
 if __name__ == '__main__':
     init_db()
-    app.run(host='0.0.0.0', port=80)
+    
+    app.run(host='0.0.0.0', port=PORT)

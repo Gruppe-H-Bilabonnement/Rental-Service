@@ -1,0 +1,49 @@
+summary: "API Overview for RentalService"
+description: >
+  The home endpoint provides a quick overview of the RentalService API,
+  listing available endpoints with their methods and descriptions.
+  Developers can use this as a quick guide to understand how to interact with the API.
+responses:
+  200:
+    description: "Successful response containing API overview"
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              title: "Welcome Message"
+              type: string
+              example: "Welcome to RentalService API"
+            endpoints:
+              title: "List of API Endpoints"
+              type: array
+              items:
+                type: object
+                properties:
+                  method:
+                    title: "HTTP Method"
+                    type: string
+                    example: "GET"
+                  endpoint:
+                    title: "API Endpoint"
+                    type: string
+                    example: "/api/v1/rentals/all"
+                  description:
+                    title: "Endpoint Description"
+                    type: string
+                    example: "Retrieve all rental contracts"
+  400:
+    description: "Bad request due to invalid query or parameters"
+  404:
+    description: "Endpoint not found"
+  500:
+    description: "Internal server error"
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            error:
+              type: string
+              example: "Internal server error"
