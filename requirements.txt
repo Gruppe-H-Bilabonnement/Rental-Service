@@ -2,7 +2,7 @@ blinker==1.8.2
 certifi==2024.8.30
 charset-normalizer==3.3.2
 click==8.1.7
-Flask==3.0.3
+Flask==2.3.3
 idna==3.10
 itsdangerous==2.2.0
 Jinja2==3.1.4
@@ -16,6 +16,6 @@ requests==2.32.3
 six==1.16.0
 tzdata==2024.2
 urllib3==2.2.3
-Werkzeug==3.0.4
+Werkzeug==2.3.7
 flask-jwt-extended
-flasgger==0.9.5
+flasgger

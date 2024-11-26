@@ -36,7 +36,7 @@ rental_routes = Blueprint('rental_routes', __name__)
 
 # Create a new rental contract (/api/v1/rentals)
 @rental_routes.route('', methods=['POST'])
-@swag_from('swagger/docs/create_rental.yml')
+@swag_from('../swagger/docs/create_rental.yml')
 def create_rental_contract():
     data = request.json
     required_fields = ['start_date', 'end_date', 'start_km', 'contracted_km', 'monthly_price', 'car_id', 'customer_id']
@@ -51,7 +51,7 @@ def create_rental_contract():
 
 # Get all rental contracts
 @rental_routes.route('/all', methods=['GET'])
-@swag_from('swagger/docs/get_all_rentals.yml')
+@swag_from('../swagger/docs/get_all_rentals.yml')
 def get_all_rental_contracts():
     try:
         rentals = db_get_all_rental_contracts()
@@ -61,7 +61,7 @@ def get_all_rental_contracts():
 
 # Get a single rental contract by ID
 @rental_routes.route('/<int:rental_id>', methods=['GET'])
-@swag_from('swagger/docs/get_rental.yml')
+@swag_from('../swagger/docs/get_rental.yml')
 def get_rental_contract(rental_id):
     try:
         rental = db_get_rental_contract_by_id(rental_id)
@@ -74,7 +74,7 @@ def get_rental_contract(rental_id):
 
 # Update a rental contract
 @rental_routes.route('/<int:rental_id>', methods=['PATCH'])
-@swag_from('swagger/docs/update_rental.yml')
+@swag_from('../swagger/docs/update_rental.yml')
 def update_rental_contract(rental_id):
     data = request.json
     
@@ -92,7 +92,7 @@ def update_rental_contract(rental_id):
 
 # Delete a rental contract
 @rental_routes.route('/<int:rental_id>', methods=['DELETE'])
-@swag_from('swagger/docs/delete_rental.yml')
+@swag_from('../swagger/docs/delete_rental.yml')
 def delete_rental_contract(rental_id):
     try:
         deleted_rows = db_delete_rental_contract(rental_id)
