@@ -64,7 +64,7 @@ def db_get_rental_contract_by_id(rental_id):
 
         cursor.execute("SELECT * FROM rental_contracts WHERE id = ?", (rental_id,))
         rental = cursor.fetchone()
-        return dict(rental) if rental else None
+        return dict(rental) if rental else False
 
     except sqlite3.Error as e:
         print(f"Database error: {e}")

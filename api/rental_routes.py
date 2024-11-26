@@ -61,7 +61,10 @@ def get_all_rental_contracts():
 def get_rental_contract(rental_id):
     try:
         rental = db_get_rental_contract_by_id(rental_id)
-        return jsonify(rental), 200 if rental else 404
+        if rental:
+            return jsonify(rental), 200
+        else:
+            return jsonify({"error": "Rental contract not found"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
