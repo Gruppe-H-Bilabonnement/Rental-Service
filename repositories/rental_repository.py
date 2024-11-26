@@ -57,7 +57,7 @@ def db_get_all_rental_contracts():
         connection.close()
 
 # Retrieve a single rental contract by ID
-def db_get_rental_by_id(rental_id):
+def db_get_rental_contract_by_id(rental_id):
     try:
         connection = create_connection()
         cursor = connection.cursor()
@@ -72,7 +72,7 @@ def db_get_rental_by_id(rental_id):
         connection.close()
 
 # Update a rental contract
-def db_update_rental(rental_id, data):
+def db_update_rental_contract(rental_id, data):
     try:
         connection = create_connection()
         cursor = connection.cursor()
@@ -101,13 +101,13 @@ def db_update_rental(rental_id, data):
     finally:
         connection.close()
 
-# Delete a rental agreement
-def db_delete_rental(rental_id):
+# Delete a rental contract
+def db_delete_rental_contract(rental_id):
     try:
         connection = create_connection()
         cursor = connection.cursor()
 
-        cursor.execute("DELETE FROM rental_agreements WHERE id = ?", (rental_id,))
+        cursor.execute("DELETE FROM rental_contracts WHERE id = ?", (rental_id,))
         connection.commit()
         return cursor.rowcount > 0 # Return True if rows were deleted
 

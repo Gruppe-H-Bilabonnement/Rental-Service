@@ -24,7 +24,11 @@ Dependencies:
 
 from flask import Blueprint, jsonify, request
 from repositories.rental_repository import (
-    db_create_rental_contract, db_get_all_rental_contracts, db_get_rental_contract_by_id, db_update_rental_contract, db_delete_rental_contract
+    db_create_rental_contract,
+    db_get_all_rental_contracts, 
+    db_get_rental_contract_by_id, 
+    db_update_rental_contract, 
+    db_delete_rental_contract
 )
 
 rental_routes = Blueprint('rental_routes', __name__)
