@@ -6,7 +6,7 @@ import sqlite3
 import os
 
 # Read database path from the environment variable or use the default path
-db_path = os.getenv('DB_PATH', '/home/site/wwwroot/database/rental.db')
+db_path = os.getenv('DB_PATH', '/home/rental.db')
 
 def create_connection():
     try:
