@@ -4,10 +4,6 @@ Creates/connect a connection object to the SQLite database with row factory enab
 
 import sqlite3
 import os
-from dotenv import load_dotenv
-
-# Load environment variables
-load_dotenv()
 
 # Read database path from the environment variable or use the default path
 db_path = os.getenv('DB_PATH', '/home/site/wwwroot/database/rental.db')
