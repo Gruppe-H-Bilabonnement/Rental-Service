@@ -79,19 +79,20 @@ def _check_data_exists():
         connection.close()
     return result
 
-# Load rental data from CSV into the database
+# Load rental data from XLSX into the database
 def _load_rental_data():
-    # Define the CSV path
-    csv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "../data-files/bilabonnement.csv")
+    # Define the Excel file path
+    excel_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data-files/Bilabonnement_2024_Clean.xlsx")
     
+    connection = None
     try:
         # Check if the file exists first
-        if not os.path.exists(csv_path):
-            print(f'Error: CSV file not found at {csv_path}')
+        if not os.path.exists(excel_path):
+            print(f'Error: Excel file not found at {excel_path}')
             return
 
-        # Read the CSV file
-        data = pd.read_csv(csv_path)
+        # Read the Excel file
+        data = pd.read_excel(excel_path)
 
         # Prepare data for insertion with a list of tuples
         rental_data = []
@@ -128,4 +129,6 @@ def _load_rental_data():
     except sqlite3.Error as e:
         print(f"Error loading data: {e}")
     finally:
-        connection.close()
+        if connection:
+            connection.close()
+ 
