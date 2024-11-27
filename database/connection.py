@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Read database path from the environment variable or use the default path
-db_path = os.getenv('DB_PATH', '/home/rental.db')
+db_path = os.getenv('DB_PATH', '/home/site/wwwroot/database/rental.db')
 
 def create_connection():
     try:
