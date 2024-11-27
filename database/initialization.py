@@ -16,6 +16,7 @@ Dependencies:
 
 import os
 import sqlite3
+from dotenv import load_dotenv
 import pandas as pd
 from database.connection import create_connection
 
