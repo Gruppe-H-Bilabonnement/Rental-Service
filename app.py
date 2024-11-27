@@ -19,11 +19,11 @@ Initialization:
 import os
 from flask import Flask, jsonify, request
 from flask_jwt_extended import JWTManager
-from dotenv import load_dotenv
 from flasgger import swag_from
 from database.initialization import init_db
 from api.rental_routes import rental_routes
 from swagger.config import init_swagger
+from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
@@ -33,7 +33,7 @@ app = Flask(__name__)
 # App Configuration
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
 jwt = JWTManager(app)
-port = int(os.getenv('PORT', 80))
+port = int(os.getenv('PORT', 5001))
 
 # Swagger Documentation
 swagger = init_swagger(app)
