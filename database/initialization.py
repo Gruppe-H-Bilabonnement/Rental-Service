@@ -82,20 +82,11 @@ def _check_data_exists():
 
 # Load rental data from XLSX into the database
 def _load_rental_data():
-    possible_paths = [
-        './Bilabonnement_2024_Clean.xlsx',
-        '/home/Bilabonnement_2024_Clean.xlsx',
-        '/home/site/wwwroot/Bilabonnement_2024_Clean.xlsx',
-        './data-files/Bilabonnement_2024_Clean.xlsx',
-        '/home/data-files/Bilabonnement_2024_Clean.xlsx',
-        '/home/site/wwwroot/data-files/Bilabonnement_2024_Clean.xlsx'
-    ]
-
-    excel_path = None
-    for path in possible_paths:
-        if os.path.exists(path):
-            excel_path = path
-            break
+    excel_path = os.getenv('EXCEL_PATH', '/home/data/Bilabonnement_2024_Clean.xlsx')
+    
+    if not os.path.exists(excel_path):
+        print(f"Critical: Excel file not found at {excel_path}")
+        return
 
     if not excel_path:
         print("Error: Excel file not found in any of the specified paths.")
