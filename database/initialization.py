@@ -81,12 +81,7 @@ def _check_data_exists():
 
 # Load rental data from XLSX into the database
 def _load_rental_data():
-
-    # Dynamically set the Excel file path
-    if os.getenv("WEBSITE_INSTANCE_ID"):  # Azure-specific environment variable
-        excel_path = os.path.join("/home", "site", "wwwroot", "data-files", "Bilabonnement_2024_Clean.xlsx")
-    else:  # Default for local/Docker
-        excel_path = os.path.join("/app", "data-files", "Bilabonnement_2024_Clean.xlsx")
+    excel_path = '/home/site/wwwroot/Bilabonnement_2024_Clean.xlsx'
     connection = None
     try:
         # Check if the file exists first
