@@ -19,20 +19,7 @@ import sys
 import sqlite3
 from dotenv import load_dotenv
 import pandas as pd
-import logging
 from database.connection import create_connection
-
-# Create a logger for this module
-# Azure-friendly logging configuration
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.StreamHandler(sys.stdout),  # Crucial for Azure logs
-        logging.StreamHandler(sys.stderr)   # Capture error logs
-    ]
-)
-logger = logging.getLogger(__name__)
 
 # Initialize the database
 def init_db():
@@ -42,10 +29,8 @@ def init_db():
     if not _check_data_exists():
         _load_rental_data()
         print("Database initialized successfully with data.")
-        logger.info("Database initialized successfully with data.")
     else:
         print("Database already initialized. No action taken.")
-        logger.info("Database already initialized. No action taken.")
 
 # Creates the rental_contracts table
 def _create_table():
@@ -77,10 +62,8 @@ def _create_table():
 
         connection.commit()
         connection.close()
-        logger.info("Rental contracts table created successfully")
     except sqlite3.Error as e:
         print(f"Error creating table: {e}")
-        logger.error(f"Error creating table: {e}", exc_info=True)
 
 # Check if rental data already exists in the database
 def _check_data_exists():
@@ -91,25 +74,19 @@ def _check_data_exists():
         cursor.execute("SELECT COUNT(*) AS count FROM rental_contracts")
         result = cursor.fetchone()['count'] > 0
         
-        logger.info(f"Data existence check completed. Records found: {result}")
         return result
     except sqlite3.Error as e:
-        logger.error(f"Error checking data: {e}", exc_info=True)
         return False
     finally:
         connection.close()
 
 # Load rental data from XLSX into the database
 def _load_rental_data():
-    BASE_DIR = '/home/site/wwwroot'
-    excel_path = os.path.join(BASE_DIR, 'data-files', 'Bilabonnement_2024_Clean.xlsx')
-        
-    logging.info(f"Excel File Path: {excel_path}")
+    excel_path = os.getenv('EXCEL_FILE_PATH', '/home/Bilabonnement_2024_Clean.xlsx')
 
     try:
         # Read the Excel file
         data = pd.read_excel(excel_path)
-        logger.info(f"Excel file loaded successfully. Rows: {len(data)}")
 
         # Prepare data for insertion (a list of tuples for batch insertion)
         rental_data = []
@@ -154,12 +131,8 @@ def _load_rental_data():
 
         connection.commit()
         connection.close()
-        logger.info(f"Successfully inserted {len(rental_data)} rental contracts")
-
     except sqlite3.Error as e:
         print(f"Database error: {e}")
-        logger.error(f"Database error during data loading: {e}", exc_info=True)
     except Exception as e:
         print(f"Unexpected error loading data: {e}")
-        logger.error(f"Unexpected error loading data: {e}", exc_info=True)
  
