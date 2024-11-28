@@ -1,5 +1,6 @@
 # Use an official Python runtime as a parent image
-FROM --platform=arm64 python:3.10-slim
+#FROM --platform=arm64 python:3.10-slim
+FROM python:3.10-slim
 
 # Set working directory
 WORKDIR /app
