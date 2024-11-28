@@ -88,6 +88,9 @@ def _check_data_exists():
     except sqlite3.Error as e:
         print(f"Database error: {e}")
         return False
+    except Exception as e:
+        print(f"Unexpected error checking data: {e}")
+        return False
     finally:
         connection.close()
 
