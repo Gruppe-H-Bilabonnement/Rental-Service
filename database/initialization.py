@@ -14,12 +14,11 @@ Dependencies:
     - create_connection: Custom function from database.connection module to establish a database connection.
 """
 
+from dotenv import load_dotenv
 import os
 import sqlite3
-from dotenv import load_dotenv
 import pandas as pd
 from database.connection import create_connection
-import requests
 
 # Load environment variables from .env file
 load_dotenv()
@@ -96,7 +95,7 @@ def _check_data_exists():
 
 def _load_rental_data():
     # Read the Excel file path from the environment variable or use the default path
-    excel_path = os.getenv('EXCEL_PATH', '/home/site/wwwroot/Bilabonnement_2024_Clean.xlsx')
+    excel_path = os.getenv('XLSX_PATH')
 
     try:
        
