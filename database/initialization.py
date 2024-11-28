@@ -15,6 +15,7 @@ Dependencies:
 """
 
 import os
+import sys
 import sqlite3
 from dotenv import load_dotenv
 import pandas as pd
@@ -22,7 +23,15 @@ import logging
 from database.connection import create_connection
 
 # Create a logger for this module
-logging.basicConfig(level=logging.INFO)
+# Azure-friendly logging configuration
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(sys.stdout),  # Crucial for Azure logs
+        logging.StreamHandler(sys.stderr)   # Capture error logs
+    ]
+)
 logger = logging.getLogger(__name__)
 
 # Initialize the database
@@ -92,8 +101,10 @@ def _check_data_exists():
 
 # Load rental data from XLSX into the database
 def _load_rental_data():
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    excel_path = os.path.join(BASE_DIR, '..','data-files', 'Bilabonnement_2024_Clean.xlsx')
+    BASE_DIR = '/home/site/wwwroot'
+    excel_path = os.path.join(BASE_DIR, 'data-files', 'Bilabonnement_2024_Clean.xlsx')
+        
+    logging.info(f"Excel File Path: {excel_path}")
 
     try:
         # Read the Excel file
