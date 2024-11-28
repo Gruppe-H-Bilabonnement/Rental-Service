@@ -13,5 +13,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the current directory contents into the container (except data-files)
 COPY . .
 
+COPY xlsx/Bilabonnement_2024_Clean.xlsx /app/Bilabonnement_2024_Clean.xlsx
+
 # Run app.py when the container launches with gunicorn (HTTP server)
 CMD ["gunicorn", "--bind", "0.0.0.0:80", "app:app"]

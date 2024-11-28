@@ -27,7 +27,7 @@ from dotenv import load_dotenv
 import sqlite3
 
 # Load environment variables
-load_dotenv()
+load_dotenv(override=True)
 
 app = Flask(__name__)
 
