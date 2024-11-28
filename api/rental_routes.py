@@ -55,7 +55,7 @@ def create_rental_contract():
 def get_all_rental_contracts():
     try:
         rentals = db_get_all_rental_contracts()
-        return jsonify(rentals), 200
+        return jsonify(rentals), 200 if rentals else 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

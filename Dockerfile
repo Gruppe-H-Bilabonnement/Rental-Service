@@ -13,8 +13,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the current directory contents into the container (except data-files)
 COPY . .
 
-# Copy the Excel file directly to the /tmp directory on Azure
-COPY data-files/Bilabonnement_2024_Clean.xlsx /tmp/Bilabonnement_2024_Clean.xlsx
-
 # Run app.py when the container launches with gunicorn (HTTP server)
 CMD ["gunicorn", "--bind", "0.0.0.0:80", "app:app"]

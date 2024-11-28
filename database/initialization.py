@@ -18,7 +18,12 @@ import os
 import sqlite3
 from dotenv import load_dotenv
 import pandas as pd
+import logging
 from database.connection import create_connection
+
+# Create a logger for this module
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Initialize the database
 def init_db():
@@ -28,8 +33,10 @@ def init_db():
     if not _check_data_exists():
         _load_rental_data()
         print("Database initialized successfully with data.")
+        logger.info("Database initialized successfully with data.")
     else:
         print("Database already initialized. No action taken.")
+        logger.info("Database already initialized. No action taken.")
 
 # Creates the rental_contracts table
 def _create_table():
@@ -61,8 +68,10 @@ def _create_table():
 
         connection.commit()
         connection.close()
+        logger.info("Rental contracts table created successfully")
     except sqlite3.Error as e:
         print(f"Error creating table: {e}")
+        logger.error(f"Error creating table: {e}", exc_info=True)
 
 # Check if rental data already exists in the database
 def _check_data_exists():
@@ -72,27 +81,24 @@ def _check_data_exists():
 
         cursor.execute("SELECT COUNT(*) AS count FROM rental_contracts")
         result = cursor.fetchone()['count'] > 0
+        
+        logger.info(f"Data existence check completed. Records found: {result}")
+        return result
     except sqlite3.Error as e:
-        print(f"Error checking data: {e}")
-        result = False
+        logger.error(f"Error checking data: {e}", exc_info=True)
+        return False
     finally:
         connection.close()
-    return result
 
 # Load rental data from XLSX into the database
 def _load_rental_data():
-    # Set the correct path to the Excel file (it is located in /tmp on Azure)
-    excel_path = '/tmp/Bilabonnement_2024_Clean.xlsx'
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    excel_path = os.path.join(BASE_DIR, '..','data-files', 'Bilabonnement_2024_Clean.xlsx')
 
-    connection = None
     try:
-        # Check if the Excel file exists in the expected location
-        if not os.path.exists(excel_path):
-            print(f'Error: Excel file not found at {excel_path}')
-            return
-
         # Read the Excel file
         data = pd.read_excel(excel_path)
+        logger.info(f"Excel file loaded successfully. Rows: {len(data)}")
 
         # Prepare data for insertion (a list of tuples for batch insertion)
         rental_data = []
@@ -100,14 +106,24 @@ def _load_rental_data():
         customer_id_counter = 1 # TODO: Implement a way to generate unique customer IDs
 
         for _, row in data.iterrows():
+            # Convert dates safely
+            start_date = pd.to_datetime(row['Start abonnement Dato'], dayfirst=True).strftime('%Y-%m-%d')
+            end_date = pd.to_datetime(row['Slut Dato Abonnement Periode'], dayfirst=True).strftime('%Y-%m-%d')
+
+            # Convert numeric values safely
+            start_km = int(row['Koert Km ved abonnemt start'])
+            contracted_km = int(row['Aftalt kontraktabonnment KM'])
+            monthly_price = float(row['abonnement pris pr maened'])
+
+            # Append data tuple for batch insertion
             rental_data.append((
-                pd.to_datetime(row['Start abonnement Dato'], dayfirst=True).strftime('%Y-%m-%d'),  # start_date
-                pd.to_datetime(row['Slut Dato Abonnement Periode'], dayfirst=True).strftime('%Y-%m-%d'),  # end_date
-                int(row['Koert Km ved abonnemt start']),  # start_km
-                int(row['Aftalt kontraktabonnment KM']),  # contracted_km
-                float(row['abonnement pris pr maened']),  # monthly_price
-                car_id_counter,  # car_id
-                customer_id_counter  # customer_id
+                start_date,
+                end_date,
+                start_km,
+                contracted_km,
+                monthly_price,
+                car_id_counter,
+                customer_id_counter
             ))
 
             # Increment car_id and customer_id for each row
@@ -120,15 +136,19 @@ def _load_rental_data():
         # Insert the data into the rental_contracts table with executemany for efficiency
         cursor.executemany("""
             INSERT INTO rental_contracts (
-                start_date, end_date, start_km, contracted_km, monthly_price, car_id, customer_id
+                start_date, end_date, start_km, contracted_km, 
+                monthly_price, car_id, customer_id
             ) VALUES (?, ?, ?, ?, ?, ?, ?)
         """, rental_data)
 
         connection.commit()
+        connection.close()
+        logger.info(f"Successfully inserted {len(rental_data)} rental contracts")
 
     except sqlite3.Error as e:
-        print(f"Error loading data: {e}")
-    finally:
-        if connection:
-            connection.close()
+        print(f"Database error: {e}")
+        logger.error(f"Database error during data loading: {e}", exc_info=True)
+    except Exception as e:
+        print(f"Unexpected error loading data: {e}")
+        logger.error(f"Unexpected error loading data: {e}", exc_info=True)
  

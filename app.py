@@ -33,7 +33,7 @@ app = Flask(__name__)
 # App Configuration
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
 jwt = JWTManager(app)
-port = int(os.getenv('PORT', 5000))
+port = int(os.getenv('PORT', 80))
 
 # Swagger Documentation
 swagger = init_swagger(app)
