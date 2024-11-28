@@ -24,7 +24,6 @@ from database.initialization import init_db
 from api.rental_routes import rental_routes
 from swagger.config import init_swagger
 from dotenv import load_dotenv
-import sqlite3
 
 # Load environment variables
 load_dotenv(override=True)
