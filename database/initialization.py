@@ -81,10 +81,12 @@ def _check_data_exists():
 
 # Load rental data from XLSX into the database
 def _load_rental_data():
-    excel_path = '/home/site/wwwroot/Bilabonnement_2024_Clean.xlsx'
+    # Set the correct path to the Excel file (it is located in /tmp on Azure)
+    excel_path = '/tmp/Bilabonnement_2024_Clean.xlsx'
+
     connection = None
     try:
-        # Check if the file exists first
+        # Check if the Excel file exists in the expected location
         if not os.path.exists(excel_path):
             print(f'Error: Excel file not found at {excel_path}')
             return
@@ -92,7 +94,7 @@ def _load_rental_data():
         # Read the Excel file
         data = pd.read_excel(excel_path)
 
-        # Prepare data for insertion with a list of tuples
+        # Prepare data for insertion (a list of tuples for batch insertion)
         rental_data = []
         car_id_counter = 1 # TODO: Implement a way to generate unique car IDs
         customer_id_counter = 1 # TODO: Implement a way to generate unique customer IDs
