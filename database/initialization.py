@@ -20,6 +20,8 @@ import sqlite3
 from dotenv import load_dotenv
 import pandas as pd
 from database.connection import create_connection
+import requests
+from io import BytesIO
 
 # Initialize the database
 def init_db():
@@ -80,25 +82,26 @@ def _check_data_exists():
     finally:
         connection.close()
 
-# Load rental data from XLSX into the database
 def _load_rental_data():
-    excel_path = os.getenv('EXCEL_PATH', '/home/data/Bilabonnement_2024_Clean.xlsx')
-    
-    if not os.path.exists(excel_path):
-        print(f"Critical: Excel file not found at {excel_path}")
-        return
+    # GitHub raw URL for the Excel file
+    excel_url = 'https://raw.githubusercontent.com/Gruppe-H-Bilabonnement/RentalService/main/data-files/Bilabonnement_2024_Clean.xlsx'
 
-    if not excel_path:
-        print("Error: Excel file not found in any of the specified paths.")
-        return
     try:
-        # Read the Excel file
-        data = pd.read_excel(excel_path)
+        # Download the Excel file from GitHub
+        response = requests.get(excel_url)
+
+        # Check if the request was successful
+        if response.status_code != 200:
+            print(f"Critical: Failed to download Excel file from {excel_url}")
+            return
+
+        # Read the Excel file directly into a pandas DataFrame from the byte content
+        data = pd.read_excel(BytesIO(response.content))
 
         # Prepare data for insertion (a list of tuples for batch insertion)
         rental_data = []
-        car_id_counter = 1 # TODO: Implement a way to generate unique car IDs
-        customer_id_counter = 1 # TODO: Implement a way to generate unique customer IDs
+        car_id_counter = 1  # TODO: Implement a way to generate unique car IDs
+        customer_id_counter = 1  # TODO: Implement a way to generate unique customer IDs
 
         for _, row in data.iterrows():
             # Convert dates safely
@@ -125,6 +128,7 @@ def _load_rental_data():
             car_id_counter += 1
             customer_id_counter += 1
 
+        # Connect to the SQLite database
         connection = create_connection()
         cursor = connection.cursor()
 
@@ -138,6 +142,9 @@ def _load_rental_data():
 
         connection.commit()
         connection.close()
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error downloading file from GitHub: {e}")
     except sqlite3.Error as e:
         print(f"Database error: {e}")
     except Exception as e:
