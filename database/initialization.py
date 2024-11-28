@@ -82,7 +82,7 @@ def _check_data_exists():
 
 # Load rental data from XLSX into the database
 def _load_rental_data():
-    excel_path = os.getenv('EXCEL_FILE_PATH', '/home/Bilabonnement_2024_Clean.xlsx')
+    excel_path = os.getenv('EXCEL_PATH', '../Bilabonnement_2024_Clean.xlsx')
 
     try:
         # Read the Excel file
