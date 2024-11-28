@@ -59,11 +59,10 @@ def _create_table():
             CREATE INDEX IF NOT EXISTS idx_customer_id ON rental_contracts(customer_id)
         """)
 
-    except sqlite3.Error as e:
-        print(f"Error creating table: {e}")
-    finally:
         connection.commit()
         connection.close()
+    except sqlite3.Error as e:
+        print(f"Error creating table: {e}")
 
 # Check if rental data already exists in the database
 def _check_data_exists():
@@ -83,7 +82,8 @@ def _check_data_exists():
 # Load rental data from XLSX into the database
 def _load_rental_data():
     # Define the Excel file path
-    excel_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data-files/Bilabonnement_2024_Clean.xlsx")
+    excel_path = os.path.join("/app", "data-files", "Bilabonnement_2024_Clean.xlsx")
+    # excel_path = os.path.join("/home", "site", "wwwroot", "data-files", "Bilabonnement_2024_Clean.xlsx")
     
     connection = None
     try:

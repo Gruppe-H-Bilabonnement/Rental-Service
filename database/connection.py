@@ -15,4 +15,3 @@ def create_connection():
         return connection
     except sqlite3.Error as e:
         print(f"Error connecting to database: {e}")
-        return None
