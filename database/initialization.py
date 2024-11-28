@@ -15,13 +15,14 @@ Dependencies:
 """
 
 import os
-import sys
 import sqlite3
 from dotenv import load_dotenv
 import pandas as pd
 from database.connection import create_connection
 import requests
-from io import BytesIO
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Initialize the database
 def init_db():
@@ -84,19 +85,11 @@ def _check_data_exists():
 
 def _load_rental_data():
     # GitHub raw URL for the Excel file
-    excel_url = 'https://raw.githubusercontent.com/Gruppe-H-Bilabonnement/RentalService/main/data-files/Bilabonnement_2024_Clean.xlsx'
-
+    excel_path = os.getenv('EXCEL_PATH', '../data-files/Bilabonnement_2024_Clean.xlsx')
     try:
-        # Download the Excel file from GitHub
-        response = requests.get(excel_url)
-
-        # Check if the request was successful
-        if response.status_code != 200:
-            print(f"Critical: Failed to download Excel file from {excel_url}")
-            return
-
+       
         # Read the Excel file directly into a pandas DataFrame from the byte content
-        data = pd.read_excel(BytesIO(response.content))
+        data = pd.read_excel(excel_path, sheet_name='Sheet1')
 
         # Prepare data for insertion (a list of tuples for batch insertion)
         rental_data = []
