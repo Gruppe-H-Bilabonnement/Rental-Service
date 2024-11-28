@@ -14,4 +14,4 @@ def create_connection():
         #connection.row_factory = sqlite3.Row
         return connection
     except sqlite3.Error as e:
-        print(f"Error connecting to database: {e}")
+        print(f"Error connecting to database: {e.args}")

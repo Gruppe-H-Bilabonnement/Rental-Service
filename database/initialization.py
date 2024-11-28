@@ -65,8 +65,11 @@ def _create_table():
 
         connection.commit()
         connection.close()
+        print("Table created successfully or already exists.")
     except sqlite3.Error as e:
         print(f"Error creating table: {e}")
+    except Exception as e:
+        print(f"Unexpected error creating table: {e}")
 
 # Check if rental data already exists in the database
 def _check_data_exists():
@@ -74,17 +77,17 @@ def _check_data_exists():
         connection = create_connection()
         cursor = connection.cursor()
 
-        cursor.execute("SELECT COUNT(*) AS count FROM rental_contracts")
-        result = cursor.fetchone()['count'] > 0
-        
-        return result
+        cursor.execute("SELECT COUNT(*) FROM rental_contracts")
+        result = cursor.fetchone()  # Fetch the first column of the result (COUNT)
+        return result[0] > 0
     except sqlite3.Error as e:
+        print(f"Database error: {e}")
         return False
     finally:
         connection.close()
 
 def _load_rental_data():
-    # GitHub raw URL for the Excel file
+    # Read the Excel file path from the environment variable or use the default path
     excel_path = os.getenv('EXCEL_PATH', '../data-files/Bilabonnement_2024_Clean.xlsx')
     try:
        
@@ -135,11 +138,9 @@ def _load_rental_data():
 
         connection.commit()
         connection.close()
-
-    except requests.exceptions.RequestException as e:
-        print(f"Error downloading file from GitHub: {e}")
+        print(f"{len(rental_data)} rows inserted successfully.")
     except sqlite3.Error as e:
-        print(f"Database error: {e}")
+        print(f"Database error: {e.args}")
     except Exception as e:
         print(f"Unexpected error loading data: {e}")
  
