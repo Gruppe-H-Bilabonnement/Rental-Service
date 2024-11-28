@@ -26,14 +26,19 @@ load_dotenv()
 
 # Initialize the database
 def init_db():
-    _create_table()
-
-    # Check if data exists to avoid reinitialization
-    if not _check_data_exists():
-        _load_rental_data()
-        print("Database initialized successfully with data.")
-    else:
-        print("Database already initialized. No action taken.")
+    print("Initializing database...")
+    try:
+        # Check if the database is already initialized
+        if not _check_data_exists():
+            _create_table()
+            _load_rental_data()
+            print("Database initialized successfully with data.")
+        else:
+            print("Database already initialized. No action taken.")
+    except Exception as e:
+        print(f"Error initializing database: {e}")
+    except sqlite3.Error as e:
+        print(f"Database error: {e}")
 
 # Creates the rental_contracts table
 def _create_table():
@@ -88,11 +93,12 @@ def _check_data_exists():
 
 def _load_rental_data():
     # Read the Excel file path from the environment variable or use the default path
-    excel_path = os.getenv('EXCEL_PATH', '../data-files/Bilabonnement_2024_Clean.xlsx')
+    excel_path = os.getenv('EXCEL_PATH', '/home/site/wwwroot/Bilabonnement_2024_Clean.xlsx')
+
     try:
        
         # Read the Excel file directly into a pandas DataFrame from the byte content
-        data = pd.read_excel(excel_path, sheet_name='Sheet1')
+        data = pd.read_excel(excel_path)
 
         # Prepare data for insertion (a list of tuples for batch insertion)
         rental_data = []
