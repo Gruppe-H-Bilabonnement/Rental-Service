@@ -5,14 +5,17 @@ FROM python:3.9-slim
 # Set working directory
 WORKDIR /app
 
-# Copy the current directory contents into the container
+# Copy the requirements.txt into the container
 COPY requirements.txt .
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the current directory contents into the container
+# Copy the current directory contents (including 'data-files' folder) into the container
 COPY . .
+
+# Ensure the 'data-files' directory is copied
+COPY data-files /app/data-files
 
 # Run app.py when the container launches with gunicorn (HTTP server)
 CMD ["gunicorn", "--bind", "0.0.0.0:80", "app:app"]
