@@ -24,6 +24,7 @@ from database.initialization import init_db
 from api.rental_routes import rental_routes
 from swagger.config import init_swagger
 from dotenv import load_dotenv
+import sqlite3
 
 # Load environment variables
 load_dotenv()
@@ -91,7 +92,36 @@ def not_found(error):
 def internal_error(error):
     return jsonify({"error": "Internal server error"}), 500
 
+# Try to create a simple table to ensure database is writable
+def test_db_creation():
+    db_path = '/home/rental.db'  # Direct path to your database file
+
+    try:
+        # Connect to SQLite database
+        connection = sqlite3.connect(db_path)
+        cursor = connection.cursor()
+        print("Database connection established.")
+
+        # Create a test table
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS test_table (
+                id INTEGER PRIMARY KEY,
+                name TEXT NOT NULL
+            )
+        """)
+        cursor.execute("INSERT INTO test_table (name) VALUES ('Test entry')")
+        connection.commit()
+        print("Test table created and data inserted.")
+    except sqlite3.Error as e:
+        print(f"Error with the SQLite database: {e}")
+    finally:
+        connection.close()
+
 # Initialize database and run the app
 if __name__ == '__main__':
+
+    test_db_creation()
+
+
     init_db()
     app.run(host='0.0.0.0', port=port)
