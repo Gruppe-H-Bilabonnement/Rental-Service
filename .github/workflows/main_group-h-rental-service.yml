@@ -23,14 +23,14 @@ jobs:
       uses: docker/login-action@v2
       with:
         registry: https://index.docker.io/v1/
-        username: ${{ secrets.AzureAppService_ContainerUsername_938fe27b41274e3bb5c859e7c8e09258 }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_3265def385c94fa4b0d0a13212cacd05 }}
+        username: ${{ secrets.AzureAppService_ContainerUsername_5b602ca0f7f94f42a9318997ada0ef5f }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_e7844177c3514eb5a96635b5393ba2dc }}
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_938fe27b41274e3bb5c859e7c8e09258 }}/rentalservice:${{ github.sha }}
+        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_5b602ca0f7f94f42a9318997ada0ef5f }}/rentalservice:${{ github.sha }}
         file: ./Dockerfile
 
   deploy:
@@ -47,5 +47,5 @@ jobs:
       with:
         app-name: 'group-h-rental-service'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_e626252afadc4557acecdb8e40dfdf56 }}
-        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_938fe27b41274e3bb5c859e7c8e09258 }}/rentalservice:${{ github.sha }}'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_f6ebd56abecd462ab50cd5ffbc97f03a }}
+        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_5b602ca0f7f94f42a9318997ada0ef5f }}/rentalservice:${{ github.sha }}'
