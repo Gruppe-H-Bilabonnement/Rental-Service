@@ -96,7 +96,7 @@ def _check_data_exists():
 
 def _load_rental_data():
     # Read the Excel file path from the environment variable or use the default path
-    excel_path = os.getenv('XLSX_PATH', '/app/Bilabonnement_2024_Clean.xlsx')
+    excel_path = os.getenv('Bilabonnement_2024_Clean.xlsx')
 
     try:
        
