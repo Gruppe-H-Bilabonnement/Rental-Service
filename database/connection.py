@@ -13,6 +13,6 @@ import sqlite3
 
 def create_connection():
         #connection = sqlite3.connect(SQLITE_DB_PATH, '/home/rental.db')
-        connection = sqlite3.connect('/home/rental.db')
+        connection = sqlite3.connect('/home/site/wwwroot/rental.db')
         connection.row_factory = sqlite3.Row
         return connection
