@@ -16,21 +16,20 @@ Dependencies:
 
 import os
 import sqlite3
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 import pandas as pd
 from database.connection import create_connection
-import requests
 
 # Load environment variables from .env file
-load_dotenv(override=True)
+#load_dotenv(override=True)
 
 # Initialize the database
 def init_db():
     print("Initializing database...")
+    _create_table()
     try:
         # Check if the database is already initialized
         if not _check_data_exists():
-            _create_table()
             _load_rental_data()
             print("Database initialized successfully with data.")
         else:
@@ -96,10 +95,15 @@ def _check_data_exists():
 
 def _load_rental_data():
     # Read the Excel file path from the environment variable or use the default path
-    excel_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'Bilabonnoment_2024_Clean.xlsx'))
+    #excel_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'Bilabonnoment_2024_Clean.xlsx'))
+    excel_path = os.path.join(os.path.dirname(__file__), '../xlsx/Bilabonnoment_2024_Clean.xlsx')
 
     try:
        
+        if not os.path.exists(excel_path):
+            print(f"Excel file not found at path: {excel_path}")
+            return
+
         # Read the Excel file directly into a pandas DataFrame from the byte content
         data = pd.read_excel(excel_path)
 

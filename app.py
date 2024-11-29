@@ -23,17 +23,16 @@ from flasgger import swag_from
 from database.initialization import init_db
 from api.rental_routes import rental_routes
 from swagger.config import init_swagger
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 
 # Load environment variables
-load_dotenv(override=True)
+#load_dotenv(override=True)
 
 app = Flask(__name__)
 
 # App Configuration
-app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
-jwt = JWTManager(app)
-port = int(os.getenv('PORT', 80))
+#app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
+#jwt = JWTManager(app)
 
 # Swagger Documentation
 swagger = init_swagger(app)
@@ -94,4 +93,4 @@ def internal_error(error):
 # Initialize database and run the app
 if __name__ == '__main__':
     init_db()
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=80)
