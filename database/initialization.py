@@ -129,6 +129,7 @@ def _load_rental_data():
                 customer_id_counter
             ))
 
+
             # Increment car_id and customer_id for each row
             car_id_counter += 1
             customer_id_counter += 1
