@@ -20,7 +20,7 @@ RUN pip install --upgrade pip \
 # Copy the current directory contents into the container
 COPY . .
 
-COPY xlsx/Bilabonnement_2024_Clean.xlsx /home/Bilabonnement_2024_Clean.xlsx
+#COPY Bilabonnement_2024_Clean.xlsx /home/Bilabonnement_2024_Clean.xlsx
 
 # Expose the port the app runs on
 EXPOSE 80
