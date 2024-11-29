@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-SQLITE_DB_PATH = os.getenv('SQLITE_DB_PATH', 'rental.db')
+SQLITE_DB_PATH = os.getenv('SQLITE_DB_PATH', '/home/rental.db')
 
 def create_connection():
         connection = sqlite3.connect(SQLITE_DB_PATH)
