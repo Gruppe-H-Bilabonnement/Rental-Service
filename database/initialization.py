@@ -25,7 +25,6 @@ from database.connection import create_connection
 
 # Initialize the database
 def init_db():
-    print("Initializing database...")
     _create_table()
     try:
         # Check if the database is already initialized
@@ -96,7 +95,7 @@ def _check_data_exists():
 def _load_rental_data():
     # Read the Excel file path from the environment variable or use the default path
     #excel_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'Bilabonnoment_2024_Clean.xlsx'))
-    excel_path = os.path.join(os.path.dirname(__file__), '../xlsx/Bilabonnoment_2024_Clean.xlsx')
+    excel_path = os.path.join(os.path.dirname(__file__), '../xlsx/bilabonnement_2024_Clean.xlsx')
 
     try:
        
