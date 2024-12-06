@@ -10,13 +10,20 @@ Functions:
 """
 
 import sqlite3
+from dotenv import load_dotenv
+import os
+
+# Load envoirnment variables
+load_dotenv()
+
+SQLITE_DB_PATH = os.getenv('SQLITE_DB_PATH', 'rental.db')
+
 
 # Create a new rental contract
 def db_create_rental_contract(data):
     try:
-        connection = sqlite3.connect('rental.db')
+        connection = sqlite3.connect(SQLITE_DB_PATH)
         connection.row_factory = sqlite3.Row
-        connection = create_connection()
         cursor = connection.cursor()
 
         query = """
@@ -45,7 +52,7 @@ def db_create_rental_contract(data):
 # Retrieve all rental contracts
 def db_get_all_rental_contracts():
     try:
-        connection = sqlite3.connect('rental.db')
+        connection = sqlite3.connect(SQLITE_DB_PATH)
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
@@ -61,7 +68,7 @@ def db_get_all_rental_contracts():
 # Retrieve a single rental contract by ID
 def db_get_rental_contract_by_id(rental_id):
     try:
-        connection = sqlite3.connect('rental.db')
+        connection = sqlite3.connect(SQLITE_DB_PATH)
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
@@ -77,7 +84,7 @@ def db_get_rental_contract_by_id(rental_id):
 # Update a rental contract
 def db_update_rental_contract(rental_id, data):
     try:
-        connection = sqlite3.connect('rental.db')
+        connection = sqlite3.connect(SQLITE_DB_PATH)
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
@@ -118,7 +125,7 @@ def db_update_rental_contract(rental_id, data):
 # Delete a rental contract
 def db_delete_rental_contract(rental_id):
     try:
-        connection = sqlite3.connect('rental.db')
+        connection = sqlite3.connect(SQLITE_DB_PATH)
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
