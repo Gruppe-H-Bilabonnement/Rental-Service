@@ -10,11 +10,12 @@ Functions:
 """
 
 import sqlite3
-from database.connection import create_connection
 
 # Create a new rental contract
 def db_create_rental_contract(data):
     try:
+        connection = sqlite3.connect('rental.db')
+        connection.row_factory = sqlite3.Row
         connection = create_connection()
         cursor = connection.cursor()
 
@@ -44,7 +45,8 @@ def db_create_rental_contract(data):
 # Retrieve all rental contracts
 def db_get_all_rental_contracts():
     try:
-        connection = create_connection()
+        connection = sqlite3.connect('rental.db')
+        connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
         cursor.execute("SELECT * FROM rental_contracts")
@@ -59,7 +61,8 @@ def db_get_all_rental_contracts():
 # Retrieve a single rental contract by ID
 def db_get_rental_contract_by_id(rental_id):
     try:
-        connection = create_connection()
+        connection = sqlite3.connect('rental.db')
+        connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
         cursor.execute("SELECT * FROM rental_contracts WHERE id = ?", (rental_id,))
@@ -74,7 +77,8 @@ def db_get_rental_contract_by_id(rental_id):
 # Update a rental contract
 def db_update_rental_contract(rental_id, data):
     try:
-        connection = create_connection()
+        connection = sqlite3.connect('rental.db')
+        connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
         # Get information about all columns in the rental_contracts table
@@ -114,7 +118,8 @@ def db_update_rental_contract(rental_id, data):
 # Delete a rental contract
 def db_delete_rental_contract(rental_id):
     try:
-        connection = create_connection()
+        connection = sqlite3.connect('rental.db')
+        connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
         cursor.execute("DELETE FROM rental_contracts WHERE id = ?", (rental_id,))

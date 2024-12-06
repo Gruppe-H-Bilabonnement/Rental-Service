@@ -18,7 +18,6 @@ import os
 import sqlite3
 #from dotenv import load_dotenv
 import pandas as pd
-from database.connection import create_connection
 
 # Load environment variables from .env file
 #load_dotenv(override=True)
@@ -41,7 +40,8 @@ def init_db():
 # Creates the rental_contracts table
 def _create_table():
     try:
-        connection = create_connection()
+        connection = sqlite3.connect('rental.db')
+        connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
         # Define the rental_contracts table
@@ -77,7 +77,8 @@ def _create_table():
 # Check if rental data already exists in the database
 def _check_data_exists():
     try:
-        connection = create_connection()
+        connection = sqlite3.connect('rental.db')
+        connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
         cursor.execute("SELECT COUNT(*) FROM rental_contracts")
@@ -138,7 +139,8 @@ def _load_rental_data():
             customer_id_counter += 1
 
         # Connect to the SQLite database
-        connection = create_connection()
+        connection = sqlite3.connect('rental.db')
+        connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
         # Insert the data into the rental_contracts table with executemany for efficiency
