@@ -18,7 +18,6 @@ load_dotenv()
 
 SQLITE_DB_PATH = os.getenv('SQLITE_DB_PATH', 'rental.db')
 
-
 # Create a new rental contract
 def db_create_rental_contract(data):
     try:
