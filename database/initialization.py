@@ -98,7 +98,7 @@ def _check_data_exists():
 def _load_rental_data():
     # Read the Excel file path from the environment variable or use the default path
     #excel_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'Bilabonnoment_2024_Clean.xlsx'))
-    excel_path = os.path.join(os.path.dirname(__file__), '../xlsx/bilabonnement_2024_Clean.xlsx')
+    excel_path = os.path.join(os.path.dirname(__file__), '../xlsx/Bilabonnement_2024_Clean.xlsx')
 
     try:
        
