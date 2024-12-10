@@ -22,7 +22,7 @@ import pandas as pd
 # Load envoirnment variables
 load_dotenv()
 
-SQLITE_DB_PATH = os.getenv('SQLITE_DB_PATH', 'rental.db')
+SQLITE_DB_PATH = os.getenv('SQLITE_DB_PATH', '/home/rental.db')
 
 # Initialize the database
 def init_db():
@@ -51,10 +51,10 @@ def _create_table():
             CREATE TABLE IF NOT EXISTS rental_contracts(
                 id INTEGER PRIMARY KEY,
                 start_date DATE NOT NULL,
-                end_date DATE NOT NULL,--CHECK (end_date > start_date),
-                start_km INTEGER NOT NULL,-- CHECK (start_km >= 0),
-                contracted_km INTEGER NOT NULL,-- CHECK (contracted_km >= 0),
-                monthly_price REAL NOT NULL,-- CHECK (monthly_price >= 0),
+                end_date DATE NOT NULL CHECK (end_date > start_date),
+                start_km INTEGER NOT NULL CHECK (start_km >= 0),
+                contracted_km INTEGER NOT NULL CHECK (contracted_km >= 0),
+                monthly_price REAL NOT NULL CHECK (monthly_price >= 0),
                 car_id INTEGER NOT NULL,
                 customer_id INTEGER NOT NULL
             )
