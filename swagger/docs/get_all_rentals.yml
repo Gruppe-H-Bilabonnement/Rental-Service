@@ -1,3 +1,6 @@
+
+tags:
+  - Rental Management
 summary: "Retrieve all rental contracts"
 description: "Fetches a list of all rental contracts in the system."
 responses:

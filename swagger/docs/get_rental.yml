@@ -1,3 +1,6 @@
+
+tags:
+  - Rental Management
 summary: "Retrieve a rental contract by ID"
 description: "Fetches a single rental contract using its unique identifier."
 parameters:

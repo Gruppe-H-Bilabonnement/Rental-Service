@@ -1,3 +1,6 @@
+
+tags:
+  - Rental Management
 summary: "Delete a rental contract"
 description: "Deletes a rental contract from the database using its unique identifier."
 parameters:

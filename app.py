@@ -35,7 +35,6 @@ app.register_blueprint(rental_routes, url_prefix='/api/v1/rentals')
 
 # Home route with API documentation
 @app.route('/api/v1/')
-@swag_from('swagger/docs/home.yml')
 def home():
     return jsonify({
         "message": "Welcome to RentalService API",
