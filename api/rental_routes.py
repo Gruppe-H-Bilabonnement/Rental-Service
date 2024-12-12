@@ -45,6 +45,7 @@ def create_rental_contract():
         return jsonify({"error": "Missing required fields"}), 400
 
     try:
+        db_create_rental_contract(data)
         return jsonify({"message": "Rental contract created"}), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 500
