@@ -1,4 +1,4 @@
-# RentalService API 🚗📊
+# RentalService API
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![Flask](https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white)
 ![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
@@ -80,10 +80,6 @@ rental-service-api/
 ### Try with Azure
 https://group-h-rental-service-emdqb2fjdzh7ddg2.northeurope-01.azurewebsites.net/api/v1/docs#/default/get_api_v1_rentals__rental_id_
 
-### Installation Steps Docker
-
-...
-
 ## API Endpoints
 
 ### Base URL: `/api/v1/rentals`
@@ -108,7 +104,7 @@ Interactive API documentation available at: `.../api/v1/docs`
 
 | Environment Variable | Description                  | Default Value                    |
 |---------------------|------------------------------|----------------------------------|
-| `SQLITE_DB_PATH`    | Path to SQLite database file | `/home/site/wwwroot/rental.db`   |
+| `SQLITE_DB_PATH`    | Path to SQLite database file | `/home/rental.db`   |
 
 
 ---
